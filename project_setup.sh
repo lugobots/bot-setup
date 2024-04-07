@@ -65,8 +65,7 @@ else
    git checkout -q tags/"$INSTALL_VERSION" || { echo 'could not checkout that tag, does it actually exist?' ; exit 1; }
 
    cd ..
-#   chmod -R 777 "$PROJECT_PATH"
-   rm -rf "$PROJECT_PATH".git
+   rm -rf "$PROJECT_PATH/".git || echo "WARNING: could not delete the .git directory. Delete it manually"
    echo "All done!"
    echo ""
 fi
