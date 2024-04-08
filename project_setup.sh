@@ -14,7 +14,7 @@ Help()
    # Display Help
    echo "Lugo Bot Setup - Creates a brand new bot"
    echo
-   echo "Syntax: LANGUAGE [version] "
+   echo "Syntax: LANGUAGE [[version]|latest] "
    echo "Possible languages: go, js, py"
    echo ""
    echo "Go template repo: "$REPO_GO
@@ -53,7 +53,7 @@ else
 
   LATEST_VERSION=$(git tag --sort=-creatordate | grep -v rc | head -n 1)
   echo "Latest version: ""${LATEST_VERSION}"
-   if [ -z "$VERSION" ]
+   if [ -z "$VERSION" ] || [ "$VERSION" = "latest" ]
    then
          INSTALL_VERSION=$LATEST_VERSION
    else
@@ -61,11 +61,11 @@ else
    fi
    git fetch --all --tags -q  &>/dev/null
 
-   git checkout -q tags/"$INSTALL_VERSION" || { echo 'could not checkout that tag, does it actually exist?' ; exit 1; }
    echo "Installing $PROJECT_NAME Version ""$INSTALL_VERSION"
+   git checkout -q tags/"$INSTALL_VERSION" || { echo 'could not checkout that tag, does it actually exist?' ; exit 1; }
+
    cd ..
-#   chmod -R 777 "$PROJECT_PATH"
-   rm -rf "$PROJECT_PATH".git
+   rm -rf "$PROJECT_PATH/".git || echo "WARNING: could not delete the .git directory. Delete it manually"
    echo "All done!"
    echo ""
 fi
